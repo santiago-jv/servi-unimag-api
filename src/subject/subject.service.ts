@@ -20,4 +20,8 @@ export class SubjectService {
     subjectFound.students.push(studentFound);
     await this.subjectRepository.save(subjectFound);
   }
+
+  async getSubjects() {
+    return this.subjectRepository.find();
+  }
 }
