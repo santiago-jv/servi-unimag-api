@@ -1,27 +1,36 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Patch, Post } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 
 @Controller('subjects')
 export class SubjectController {
-    constructor(private readonly subjectService:SubjectService) {
-    }
+  constructor(private readonly subjectService: SubjectService) {}
 
-    @Post("/student")
-    public async associateStudentToSubject() {
-        //TODO: Resolver internal server error
-        const result = await this.subjectService.associateStudentToSubject("37658c34-93b6-40cd-9b64-e2a31d795328", "37658c34-93b6-40cd-9b64-e2a3qd795328")
-    }
+  @Patch('/student')
+  public async associateStudentToSubject(
+    @Body() associationData: { studentId: string; subjectId: string },
+  ) {
+    await this.subjectService.associateStudentToSubject(
+      associationData.studentId,
+      associationData.subjectId,
+    );
 
-    @Get("")
-    public async getSubjects() {
-        //TODO: Agregar data del monitor
-        const result = await this.subjectService.getSubjects()
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Student associated',
+      data: null,
+    };
+  }
 
-        return {
-            data:result
-        }
-    }
+  @Get('')
+  public async getSubjects() {
+    const result = await this.subjectService.getSubjects();
 
-    //TODO: Lista de estudiantes asociados al monitor.
-    //TODO: Add edit for subject time to start place, date, room
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'subjects found',
+      data: result,
+    };
+  }
+
+  //TODO: Add edit for subject time to start place, date, room
 }

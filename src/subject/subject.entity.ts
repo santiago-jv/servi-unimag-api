@@ -24,6 +24,7 @@ export class Subject {
   @ManyToMany(() => User, (user) => user.subjects, {
     onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
+    cascade: true 
   })
   students: User[];
   @JoinColumn({ 
