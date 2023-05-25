@@ -9,7 +9,8 @@ export class SubjectService {
   constructor(
     @InjectRepository(Subject)
     private readonly subjectRepository: Repository<Subject>,
-    @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
   ) {}
   async associateStudentToSubject(studentId: string, subjectId: string) {
     const subjectFound = await this.subjectRepository.findOne({
@@ -20,22 +21,35 @@ export class SubjectService {
     subjectFound.students.push(studentFound);
     await this.subjectRepository.save(subjectFound);
   }
+  async update(id: string, data: Partial<Subject>) {
+    const subject = await this.subjectRepository.findOneBy({
+      id: id,
+    });
+    //2002-32-10
+    // 
+
+    subject.classDate = data.classDate;
+    subject.classPlace = data.classPlace;
+    subject.classRoom = data.classRoom;
+    subject.classTime = data.classTime;
+
+    return this.subjectRepository.save(subject);
+  }
 
   async getSubjects() {
     return this.subjectRepository.find({
-      relations:['teacher']
+      relations: ['teacher'],
     });
   }
 
-  async getOneByTeacher(teacherId:string) {
+  async getOneByTeacher(teacherId: string) {
     return this.subjectRepository.findOne({
-      where:{
-        teacher:{
-          id:teacherId
-        }
+      where: {
+        teacher: {
+          id: teacherId,
+        },
       },
-      relations:['students']
-    })
+      relations: ['students'],
+    });
   }
-
 }

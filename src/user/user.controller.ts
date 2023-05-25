@@ -12,4 +12,13 @@ export class UserController {
       data: await this.userService.getStudentsOfMonitor(teacherId),
     };
   }
+
+  @Get('/teacher/:teacherId')
+  public async getMonitorInfo(@Param('teacherId') teacherId: string) {
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Students found',
+      data: await this.userService.getMonitor(teacherId),
+    };
+  }
 }

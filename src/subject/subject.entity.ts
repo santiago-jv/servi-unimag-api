@@ -32,4 +32,31 @@ export class Subject {
   })
   @ManyToOne(() => User, (user) => user.subjects)
   teacher: User;
+
+  @Column({
+    name: 'class_date',
+    nullable: false,
+  })
+  classDate: string;
+
+  @Column({
+    name: 'class_time',
+    nullable: false,
+  })
+  classTime: string;
+
+  @Column({
+    name: 'class_place',
+    nullable: false,
+  })
+  classPlace: string;
+
+  
+  @Column({
+    name: 'class_room',
+    nullable: false,
+  })
+  classRoom: string;
+
+
 }

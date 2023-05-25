@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectService } from 'src/subject/subject.service';
 import { User } from 'src/user/user.entity';
@@ -8,8 +13,17 @@ import { Repository } from 'typeorm';
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @Inject(forwardRef(() => SubjectService)) private readonly subjectService: SubjectService,
+    @Inject(forwardRef(() => SubjectService))
+    private readonly subjectService: SubjectService,
   ) {}
+
+  public async getMonitor(teacherId: string) {
+    return this.userRepository.findOne({
+      where: {
+        id: teacherId,
+      },
+    });
+  }
   public async findUserByCodeAndPassword(code: string, password: string) {
     const userFound = await this.userRepository.findOne({
       where: {
